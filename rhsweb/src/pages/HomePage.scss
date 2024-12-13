@@ -1,0 +1,47 @@
+.homepage {
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #2a2a72;
+      color: white;
+  
+      .homepage__logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+  
+      .homepage__nav ul {
+        display: flex;
+        list-style: none;
+  
+        li {
+          margin: 0 1rem;
+  
+          a {
+            text-decoration: none;
+            color: white;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  
+    &__main {
+      padding: 2rem;
+      text-align: center;
+  
+      h2 {
+        font-size: 2rem;
+        color: #2a2a72;
+      }
+  
+      p {
+        font-size: 1.2rem;
+        color: #555;
+      }
+    }
+  }  
