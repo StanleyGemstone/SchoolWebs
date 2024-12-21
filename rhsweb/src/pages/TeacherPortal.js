@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import TeacherPortalNav from "../components/TeacherPortalNav";
+import "./TeacherPortal.scss";
+
 
 const TeacherPortal = () => {
   const [loading, setLoading] = useState(true); // Track loading state
@@ -28,8 +30,8 @@ const TeacherPortal = () => {
   }
 
   return (
-    <div>
-      <h1>Welcome to the Teacher Portal</h1>
+    <div className="teacher-portal">
+      <h1>WELCOME TEACHER __________</h1>
       <TeacherPortalNav />
     </div>
   );
