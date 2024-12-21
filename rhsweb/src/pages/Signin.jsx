@@ -1,21 +1,29 @@
 import React, { useState } from "react";
-import { Helmet } from 'react-helmet';
-import app from "../firebase";
-import "./Signin.scss";
+import { Helmet } from "react-helmet";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom"; // Added for navigation
+import "./Signin.scss";
 
 const Signin = () => {
-  const [emailOrPhone, setEmailOrPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // Added error state
+  const navigate = useNavigate(); // Navigation instance
   const auth = getAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, emailOrPhone, password);
+      await signInWithEmailAndPassword(auth, email, password);
       alert("Signin successful!");
-    } catch (error) {
-      alert(error.message);
+      navigate("/teacherportal"); // Redirect to Teacher Portal
+    } catch (err) {
+      setError("Invalid credentials. Please check your email or password.");
     }
   };
 
@@ -26,11 +34,12 @@ const Signin = () => {
       </Helmet>
       <form onSubmit={handleSubmit}>
         <h2>Signin</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <input
           type="text"
-          placeholder="Email or Phone"
-          value={emailOrPhone}
-          onChange={(e) => setEmailOrPhone(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
         <input

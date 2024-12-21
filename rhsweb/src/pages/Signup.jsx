@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase"; // Import Firestore instance
 import { collection, addDoc } from "firebase/firestore"; // Import Firestore methods
 import "./Signup.scss";
@@ -20,6 +21,7 @@ const Signup = () => {
 
   const [classes, setClasses] = useState([]);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -79,7 +81,8 @@ const Signup = () => {
 
       await addDoc(collection(db, "users"), userDoc); // Save to "users" collection
 
-      alert("Signup successful and data saved to Firestore!");
+      alert("Signup successful! Redirecting to Sign In page...");
+      navigate("/signin");
     } catch (error) {
       alert(`Error: ${error.message}`);
     }
