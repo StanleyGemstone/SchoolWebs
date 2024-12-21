@@ -4,7 +4,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase"; // Import Firestore instance
 import { collection, addDoc } from "firebase/firestore"; // Import Firestore methods
-import "./Signup.scss";
+import "../styles/Signup.scss";
 
 const Signup = () => {
   const [formData, setFormData] = useState({

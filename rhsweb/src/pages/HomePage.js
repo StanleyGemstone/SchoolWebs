@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import "./HomePage.scss";
+import "../styles/HomePage.scss";
 
 const HomePage = () => {
   return (

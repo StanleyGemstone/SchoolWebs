@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom"; // Added for navigation
-import "./Signin.scss";
+import "../styles/Signin.scss";
 
 const Signin = () => {
   const [email, setEmail] = useState("");

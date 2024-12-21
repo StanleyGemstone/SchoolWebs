@@ -6,6 +6,7 @@ const TeacherPortalNav = () => {
       <ul>
         <li><Link to="/register-student">Register Student</Link></li>
         <li><Link to="/add-score">Add Score</Link></li>
+        <li><Link to="/student-portal">Students</Link></li>
       </ul>
     </nav>
   );
