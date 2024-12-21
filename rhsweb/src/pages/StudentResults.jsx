@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import jsPDF from "jspdf";
+// import "jspdf-autotable"; // For creating tables in PDFs
 import "../styles/StudentResults.scss";
 
 const StudentResults = () => {
@@ -31,6 +33,45 @@ const StudentResults = () => {
 
     fetchResults();
   }, [auth]);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const user = auth.currentUser;
+
+    // Add school logo (optional, use base64 image or public URL)
+    // Example: doc.addImage(logo, "PNG", 10, 10, 50, 20);
+
+    // Add title
+    doc.setFontSize(16);
+    doc.text("Student Results", 105, 20, { align: "center" });
+
+    // Add student details
+    doc.setFontSize(12);
+    doc.text(`Name: ${user?.displayName || "N/A"}`, 10, 40);
+    doc.text(`Email: ${user?.email}`, 10, 50);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 10, 60);
+
+    // Add table of results
+    const tableColumns = ["Subject", "1st CAT", "2nd CAT", "Assessment", "Exam", "Total", "Average"];
+    const tableRows = results.map((result) => [
+      result.subject,
+      result.cat1,
+      result.cat2,
+      result.assessment,
+      result.exam,
+      result.total,
+      result.average,
+    ]);
+
+    doc.autoTable({
+      startY: 70,
+      head: [tableColumns],
+      body: tableRows,
+    });
+
+    // Save the PDF
+    doc.save("Student_Results.pdf");
+  };
 
   if (loading) return <p>Loading results...</p>;
 
@@ -65,6 +106,9 @@ const StudentResults = () => {
           ))}
         </tbody>
       </table>
+      <button onClick={generatePDF} className="download-btn">
+        Download Results
+      </button>
     </div>
   );
 };
