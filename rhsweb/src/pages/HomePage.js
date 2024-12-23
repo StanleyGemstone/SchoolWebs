@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "../styles/HomePage.scss";
+import Logo from '../utils/logo.png';
 
 const Homepage = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -21,7 +22,7 @@ const Homepage = () => {
       </Helmet>
       <header className="homepage-header">
         <div className="logo">
-          <img src="../utils/logo.PNG" alt="School Logo" />
+          <img src={Logo} sizes="16x16" alt="School Logo" />
           <h1>ROYAL HERITAGE SCHOOL</h1>
         </div>
         <nav className="homepage-nav">
