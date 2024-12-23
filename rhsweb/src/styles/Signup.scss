@@ -1,46 +1,174 @@
 .signup {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  // flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+  
+  form {
+    // display: flex;
+    // flex-wrap: wrap;
+    // justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f9f9f9;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    
+    h1 {
+      margin-bottom: 0.5rem;
+      color: #004080;
+      text-align: center;
+    }
   
-    form {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    input {
+      display: inline-flex;
+      flex-wrap: wrap;
+      // justify-content: space-evenly;
+      // flex-basis: 30%;
+      width: 26%;
+      padding: 0.8rem;
+      margin: .5rem .5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    select {
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      // flex-basis: 30%;
+      width: 28%;
+      padding: 0.8rem;
+      margin: 1rem .5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    button {
       width: 100%;
-      max-width: 400px;
-  
-      h2 {
-        margin-bottom: 1.5rem;
+      padding: 0.8rem;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      
+      &:hover {
+        background-color: #1a1a50;
+      }
+    }
+
+    p { 
+      margin-top: 1rem;
+      text-align: center;
+      color: #2a2a72;
+
+      a {
         color: #2a2a72;
+        font-weight: bold;
+        text-decoration: none;
       }
-  
-      input, select {
-        display: block;
-        width: 100%;
-        padding: 0.8rem;
-        margin-bottom: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-  
-      button {
-        width: 100%;
-        padding: 0.8rem;
-        background-color: #2a2a72;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 1rem;
-  
-        &:hover {
-          background-color: #1a1a50;
+    }
+    // Responsive Design
+    @media (max-width: 768px) {
+        form {
+          padding: 2rem;
+          margin: 2rem;
+          height: auto;
         }
+
+        // .name-row {
+        //   flex-direction: column; // Stack inputs vertically on smaller screens
+
+          input {
+            width: 94%; // Full width for each input
+          }
+
+          select {
+            width: 100%; // Full width for each input
+          }
       }
     }
   }
   
+
+// .signup {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 100vh;
+//   background-color: #f9f9f9;
+
+//   form {
+//     background: white;
+//     padding: 2rem;
+//     border-radius: 8px;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//     width: 100%;
+//     max-width: 800px;
+
+//     h1 {
+//       margin-bottom: 1.5rem;
+//       color: #004080;
+//       text-align: center;
+//     }
+
+//     .name-row {
+//       display: flex;
+//       gap: 1rem; // Space between inputs
+//       margin-bottom: 1rem;
+
+//       input {
+//         flex: 1; // Equal width for each input in the row
+//         padding: 0.8rem;
+//         border: 1px solid #ddd;
+//         border-radius: 4px;
+//       }
+//     }
+
+//     input,
+//     select {
+//       display: block;
+//       width: 100%;
+//       padding: 0.8rem;
+//       margin-bottom: 1rem;
+//       border: 1px solid #ddd;
+//       border-radius: 4px;
+//     }
+
+//     button {
+//       width: 100%;
+//       padding: 0.8rem;
+//       background-color: #2a2a72;
+//       color: white;
+//       border: none;
+//       border-radius: 4px;
+//       cursor: pointer;
+//       font-size: 1rem;
+
+//       &:hover {
+//         background-color: #1a1a50;
+//       }
+//     }
+//   }
+
+//   // Responsive Design
+//   @media (max-width: 768px) {
+//     form {
+//       padding: 1.5rem;
+//     }
+
+//     .name-row {
+//       flex-direction: column; // Stack inputs vertically on smaller screens
+
+//       input {
+//         width: 100%; // Full width for each input
+//       }
+//     }
+//   }
+// }

@@ -16,6 +16,7 @@
       h2 {
         margin-bottom: 1.5rem;
         color: #2a2a72;
+        text-align: center;
       }
   
       input, select {
@@ -39,6 +40,18 @@
   
         &:hover {
           background-color: #1a1a50;
+        }
+      }
+
+      p { 
+        margin-top: 1rem;
+        text-align: center;
+        color: #2a2a72;
+
+        a {
+          color: #2a2a72;
+          font-weight: bold;
+          text-decoration: none;
         }
       }
     }

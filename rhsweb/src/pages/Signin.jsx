@@ -1,14 +1,73 @@
+// import React, { useState } from "react";
+// import { Helmet } from "react-helmet";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// import { useNavigate } from "react-router-dom"; // Added for navigation
+// import "../styles/Signin.scss";
+
+// const Signin = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [error, setError] = useState(""); // Added error state
+//   const navigate = useNavigate(); // Navigation instance
+//   const auth = getAuth();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     if (!email || !password) {
+//       setError("Please fill in all fields.");
+//       return;
+//     }
+
+//     try {
+//       await signInWithEmailAndPassword(auth, email, password);
+//       alert("Signin successful!");
+//       navigate("/teacherportal"); // Redirect to Teacher Portal
+//     } catch (err) {
+//       setError("Invalid credentials. Please check your email or password.");
+//     }
+//   };
+
+//   return (
+//     <div className="signin">
+//       <Helmet>
+//         <title>RHS-Signin</title>
+//       </Helmet>
+//       <form onSubmit={handleSubmit}>
+//         <h2>Signin</h2>
+//         {error && <p style={{ color: "red" }}>{error}</p>}
+//         <input
+//           type="text"
+//           placeholder="Email"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           required
+//         />
+//         <input
+//           type="password"
+//           placeholder="Password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           required
+//         />
+//         <button type="submit">Signin</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default Signin;
+
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom"; // Added for navigation
+import { useNavigate } from "react-router-dom";
 import "../styles/Signin.scss";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Added error state
-  const navigate = useNavigate(); // Navigation instance
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
   const auth = getAuth();
 
   const handleSubmit = async (e) => {
@@ -20,8 +79,7 @@ const Signin = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Signin successful!");
-      navigate("/teacherportal"); // Redirect to Teacher Portal
+      navigate("/teacherportal");
     } catch (err) {
       setError("Invalid credentials. Please check your email or password.");
     }
@@ -33,7 +91,7 @@ const Signin = () => {
         <title>RHS-Signin</title>
       </Helmet>
       <form onSubmit={handleSubmit}>
-        <h2>Signin</h2>
+        <h2>SIGNIN</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <input
           type="text"
@@ -50,6 +108,9 @@ const Signin = () => {
           required
         />
         <button type="submit">Signin</button>
+        <p>
+          Don’t have an account? <a href="/signup">Signup</a>
+        </p>
       </form>
     </div>
   );
