@@ -10,6 +10,7 @@ import TeacherPortal from "./pages/TeacherPortal";
 import StudentPortal from "./pages/StudentPortal";
 import StudentProfile from "./pages/StudentProfile";
 import StudentResults from "./pages/StudentResults";
+import NotFound from "./components/NotFound";
 import "./index.scss"; // Import global styles
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
         <Route path="/student-portal" element={<StudentPortal />} />
         <Route path="/student-profile" element={<StudentProfile />} />
         <Route path="/student-results" element={<StudentResults />} />
-        <Route path="*" element={<h1>Page Not Found</h1>} />
+        <Route path="*" element={<NotFound />} />
         {/* Add more routes as needed */}
       </Routes>
     </Router>
