@@ -3,20 +3,27 @@
   // flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f9f9f9;
+  height: 100%;
+  background-image: url("../utils/logo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: lighten;
+  background-color: rgba(255, 255, 255, 0.5);
+  //background-color: #f9f9f97e;
   
   form {
     // display: flex;
     // flex-wrap: wrap;
-    // justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    justify-content: center;
     align-items: center;
-    background: white;
+    background: rgba(0, 0, 40, 0.2);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px;
+    max-width: 450px;
     
     h1 {
       margin-bottom: 0.5rem;
@@ -25,11 +32,11 @@
     }
   
     input {
-      display: inline-flex;
+      // display: inline-flex;
       flex-wrap: wrap;
       // justify-content: space-evenly;
       // flex-basis: 30%;
-      width: 26%;
+      width: 94%;
       padding: 0.8rem;
       margin: .5rem .5rem;
       border: 1px solid #ddd;
@@ -37,13 +44,13 @@
     }
     
     select {
-      display: inline-flex;
+      // display: inline-flex;
       flex-wrap: wrap;
       justify-content: space-evenly;
       // flex-basis: 30%;
-      width: 28%;
+      width: 29%;
       padding: 0.8rem;
-      margin: 1rem .5rem;
+      margin: 1rem 0.5rem;
       border: 1px solid #ddd;
       border-radius: 4px;
     }
@@ -51,7 +58,8 @@
     button {
       width: 100%;
       padding: 0.8rem;
-      background-color: #004080;
+      margin: 1rem .5rem;
+      background-color: #2a2a72;
       color: white;
       border: none;
       border-radius: 4px;
@@ -101,7 +109,7 @@
 //   display: flex;
 //   justify-content: center;
 //   align-items: center;
-//   height: 100vh;
+//   height: 100%;
 //   background-color: #f9f9f9;
 
 //   form {

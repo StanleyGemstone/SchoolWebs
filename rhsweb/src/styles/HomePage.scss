@@ -9,7 +9,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #004080;
+    background-color: #2a2a72;
     color: white;
 
     .logo {
@@ -49,6 +49,7 @@
           button:hover,
           a:hover {
             background-color: #003366;
+            font-weight: bolder;
             border-radius: 5px;
           }
         }
@@ -83,7 +84,7 @@
     .cta-btn {
       text-decoration: none;
       padding: 10px 20px;
-      background-color: #004080;
+      background-color: #2a2a72;
       color: white;
       border-radius: 5px;
       font-size: 18px;
