@@ -1,25 +1,28 @@
 // import React, { useState } from "react";
 // import { Helmet } from "react-helmet";
 // import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-// import { useNavigate } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 // import { db } from "../firebase"; // Import Firestore instance
 // import { collection, addDoc } from "firebase/firestore"; // Import Firestore methods
 // import "../styles/Signup.scss";
 
 // const Signup = () => {
 //   const [formData, setFormData] = useState({
-//     fullName: "",
+//     firstName: "",
+//     middleName: "",
+//     lastName: "",
 //     gender: "",
 //     section: "",
 //     class: "",
 //     email: "",
 //     phone: "",
-//     role: "teacher",
 //     password: "",
 //     confirmPassword: "",
 //   });
 
 //   const [classes, setClasses] = useState([]);
+//   const [successMessage, setSuccessMessage] = useState("");
+//   const [errorMessage, setErrorMessage] = useState("");
 //   const auth = getAuth();
 //   const navigate = useNavigate();
 
@@ -52,8 +55,11 @@
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
+//     setErrorMessage("");
+//     setSuccessMessage("");
+
 //     if (formData.password !== formData.confirmPassword) {
-//       alert("Passwords do not match!");
+//       setErrorMessage("Passwords do not match!");
 //       return;
 //     }
 
@@ -68,9 +74,10 @@
 
 //       // Save user data to Firestore
 //       const userDoc = {
-//         fullName: formData.fullName,
+//         firstName: formData.firstName,
+//         middleName: formData.middleName,
+//         lastName: formData.lastName,
 //         gender: formData.gender,
-//         role: formData.role,
 //         section: formData.section,
 //         class: formData.class,
 //         email: formData.email,
@@ -79,12 +86,14 @@
 //         createdAt: new Date(),
 //       };
 
-//       await addDoc(collection(db, "users"), userDoc); // Save to "users" collection
+//       await addDoc(collection(db, "users"), userDoc);
 
-//       alert("Signup successful! Redirecting to Sign In page...");
-//       navigate("/signin");
+//       setSuccessMessage("Signup successful!!!");
+//       setTimeout(() => {
+//         navigate("/signin"); // Redirect to Sign-In page
+//       }, 2000); // Display message for 2 seconds
 //     } catch (error) {
-//       alert(`Error: ${error.message}`);
+//       setErrorMessage(`Error: ${error.message}`);
 //     }
 //   };
 
@@ -94,12 +103,32 @@
 //         <title>RHS-Signup</title>
 //       </Helmet>
 //       <form onSubmit={handleSubmit}>
-//         <h2>Signup</h2>
+//         <h1>SIGNUP</h1>
+
+//         {/* Success Message */}
+//         {successMessage && <p className="success-message">{successMessage}</p>}
+//         {errorMessage && <p className="error-message">{errorMessage}</p>}
+
 //         <input
 //           type="text"
-//           name="fullName"
-//           placeholder="Full Name"
-//           value={formData.fullName}
+//           name="firstName"
+//           placeholder="First Name"
+//           value={formData.firstName}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="text"
+//           name="middleName"
+//           placeholder="Middle Name"
+//           value={formData.middleName}
+//           onChange={handleChange}
+//         />
+//         <input
+//           type="text"
+//           name="lastName"
+//           placeholder="Last Name"
+//           value={formData.lastName}
 //           onChange={handleChange}
 //           required
 //         />
@@ -113,46 +142,29 @@
 //           <option value="Male">Male</option>
 //           <option value="Female">Female</option>
 //         </select>
-//         <label htmlFor="role">Role:</label>
 //         <select
-//           name="role"
-//           value={formData.role}
+//           name="section"
+//           value={formData.section}
 //           onChange={handleChange}
 //           required
 //         >
-//           <option value="teacher">Teacher</option>
-//           <option value="parent">Parent</option>
+//           <option value="">Select Section</option>
+//           <option value="Primary">Primary</option>
+//           <option value="Secondary">Secondary</option>
 //         </select>
-
-//         {/* Conditional rendering for section and class */}
-//         {formData.role === "teacher" && (
-//           <>
-//             <select
-//               name="section"
-//               value={formData.section}
-//               onChange={handleChange}
-//               required
-//             >
-//               <option value="">Select Section</option>
-//               <option value="Primary">Primary</option>
-//               <option value="Secondary">Secondary</option>
-//             </select>
-//             <select
-//               name="class"
-//               value={formData.class}
-//               onChange={handleChange}
-//               required
-//             >
-//               <option value="">Select Class</option>
-//               {classes.map((cls, index) => (
-//                 <option key={index} value={cls}>
-//                   {cls}
-//                 </option>
-//               ))}
-//             </select>
-//           </>
-//         )}
-
+//         <select
+//           name="class"
+//           value={formData.class}
+//           onChange={handleChange}
+//           required
+//         >
+//           <option value="">Select Class</option>
+//           {classes.map((cls, index) => (
+//             <option key={index} value={cls}>
+//               {cls}
+//             </option>
+//           ))}
+//         </select>
 //         <input
 //           type="email"
 //           name="email"
@@ -186,6 +198,11 @@
 //           required
 //         />
 //         <button type="submit">Signup</button>
+
+//         {/* Link to Signin */}
+//         <p className="form-footer">
+//           Already have an account? <Link to="/signin">Signin</Link>
+//         </p>
 //       </form>
 //     </div>
 //   );
@@ -195,10 +212,10 @@
 
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { db } from "../firebase"; // Import Firestore instance
-import { collection, addDoc } from "firebase/firestore"; // Import Firestore methods
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore methods
 import "../styles/Signup.scss";
 
 const Signup = () => {
@@ -267,7 +284,11 @@ const Signup = () => {
       );
       const user = userCredential.user;
 
-      // Save user data to Firestore
+      // Update the user's display name in Firebase Authentication
+      const fullName = `${formData.firstName} ${formData.lastName}`;
+      await updateProfile(user, { displayName: fullName });
+
+      // Save user data to Firestore with UID as the document ID
       const userDoc = {
         firstName: formData.firstName,
         middleName: formData.middleName,
@@ -281,7 +302,7 @@ const Signup = () => {
         createdAt: new Date(),
       };
 
-      await addDoc(collection(db, "users"), userDoc);
+      await setDoc(doc(db, "users", user.uid), userDoc);
 
       setSuccessMessage("Signup successful!!!");
       setTimeout(() => {

@@ -154,7 +154,7 @@ const RegisterStudent = () => {
         <button type="submit">Register Student</button>
       </form>
 
-      <button onClick={() => navigate("/teacherportal")}>Back to Dashboard</button>
+      <button onClick={() => navigate("/teacher-portal")}>Back to Dashboard</button>
     </div>
   );
 };
