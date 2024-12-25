@@ -79,7 +79,7 @@ const Signin = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/teacherportal");
+      navigate("/teacher-portal");
     } catch (err) {
       setError("Invalid credentials. Please check your email or password.");
     }
