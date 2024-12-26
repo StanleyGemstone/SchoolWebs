@@ -12,12 +12,12 @@ const AddScores = () => {
   const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
-  const [section, setSection] = useState(""); // Added to fetch the teacher's section
+  const [section, setSection] = useState(null); // Updated initial state to null
   const navigate = useNavigate();
 
   const subjectsBySection = {
-    primary: ["English", "Maths", "Handwriting"],
-    secondary: ["Maths", "Chemistry", "Basic Technology"],
+    Primary: ["English", "Maths", "Handwriting"],
+    Secondary: ["Maths", "Chemistry", "Basic Technology"],
   };
 
   useEffect(() => {
@@ -25,10 +25,15 @@ const AddScores = () => {
       if (!currentUser) return;
 
       try {
+        setLoading(true);
+
         // Fetch teacher's section
         const teacherDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (teacherDoc.exists()) {
-          setSection(teacherDoc.data().section);
+          const teacherData = teacherDoc.data();
+          setSection(teacherData.section); // Ensure `section` is set correctly
+        } else {
+          throw new Error("Teacher data not found");
         }
 
         // Fetch students
@@ -43,9 +48,9 @@ const AddScores = () => {
           .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Sort alphabetically by first name
 
         setStudents(studentList);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -55,7 +60,7 @@ const AddScores = () => {
 
   useEffect(() => {
     const fetchSavedScores = async () => {
-      if (!subject) return;
+      if (!subject || students.length === 0) return;
 
       try {
         const scoresData = {};
@@ -81,9 +86,7 @@ const AddScores = () => {
       }
     };
 
-    if (students.length > 0) {
-      fetchSavedScores();
-    }
+    fetchSavedScores();
   }, [subject, students, currentUser]);
 
   const handleScoreChange = (studentId, field, value) => {
@@ -102,7 +105,6 @@ const AddScores = () => {
       return;
     }
 
-    // Validate scores
     const invalidEntries = [];
     Object.entries(scores).forEach(([studentId, studentScores]) => {
       Object.entries(studentScores).forEach(([key, value]) => {
@@ -155,13 +157,15 @@ const AddScores = () => {
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           className="subject-select"
+          disabled={!section}
         >
           <option value="">--Select Subject--</option>
-          {subjectsBySection[section]?.map((subj) => (
-            <option key={subj} value={subj}>
-              {subj}
-            </option>
-          ))}
+          {section &&
+            subjectsBySection[section]?.map((subj) => (
+              <option key={subj} value={subj}>
+                {subj}
+              </option>
+            ))}
         </select>
       </div>
 
