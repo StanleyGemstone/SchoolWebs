@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import useAuth from "../components/useAuth";
+import { useNavigate } from "react-router-dom";
 import "../styles/AddScores.scss";
 
 const AddScores = () => {
@@ -11,36 +12,86 @@ const AddScores = () => {
   const [scores, setScores] = useState({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [section, setSection] = useState(""); // Added to fetch the teacher's section
+  const navigate = useNavigate();
+
+  const subjectsBySection = {
+    primary: ["English", "Maths", "Handwriting"],
+    secondary: ["Maths", "Chemistry", "Basic Technology"],
+  };
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchStudentsAndSection = async () => {
       if (!currentUser) return;
+
       try {
+        // Fetch teacher's section
+        const teacherDoc = await getDoc(doc(db, "users", currentUser.uid));
+        if (teacherDoc.exists()) {
+          setSection(teacherDoc.data().section);
+        }
+
+        // Fetch students
         const studentsRef = collection(db, "users", currentUser.uid, "students");
         const querySnapshot = await getDocs(studentsRef);
 
-        const studentList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const studentList = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Sort alphabetically by first name
 
         setStudents(studentList);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching students:", error.message);
+        console.error("Error fetching data:", error.message);
         setLoading(false);
       }
     };
 
-    fetchStudents();
+    fetchStudentsAndSection();
   }, [currentUser]);
+
+  useEffect(() => {
+    const fetchSavedScores = async () => {
+      if (!subject) return;
+
+      try {
+        const scoresData = {};
+        for (const student of students) {
+          const subjectDoc = await getDoc(
+            doc(
+              db,
+              "users",
+              currentUser.uid,
+              "students",
+              student.id,
+              "subjects",
+              subject
+            )
+          );
+          if (subjectDoc.exists()) {
+            scoresData[student.id] = subjectDoc.data().scores;
+          }
+        }
+        setScores(scoresData);
+      } catch (error) {
+        console.error("Error fetching saved scores:", error.message);
+      }
+    };
+
+    if (students.length > 0) {
+      fetchSavedScores();
+    }
+  }, [subject, students, currentUser]);
 
   const handleScoreChange = (studentId, field, value) => {
     setScores((prev) => ({
       ...prev,
       [studentId]: {
         ...prev[studentId],
-        [field]: value,
+        [field]: parseInt(value, 10) || 0,
       },
     }));
   };
@@ -48,6 +99,25 @@ const AddScores = () => {
   const saveScores = async () => {
     if (!subject) {
       setMessage("Please select a subject.");
+      return;
+    }
+
+    // Validate scores
+    const invalidEntries = [];
+    Object.entries(scores).forEach(([studentId, studentScores]) => {
+      Object.entries(studentScores).forEach(([key, value]) => {
+        if (
+          (key === "CAT1" || key === "CAT2") && value > 15 ||
+          key === "Assignment" && value > 10 ||
+          key === "Exam" && value > 60
+        ) {
+          invalidEntries.push(studentId);
+        }
+      });
+    });
+
+    if (invalidEntries.length > 0) {
+      setMessage("Some scores exceed the maximum allowed limits.");
       return;
     }
 
@@ -87,9 +157,11 @@ const AddScores = () => {
           className="subject-select"
         >
           <option value="">--Select Subject--</option>
-          <option value="Math">Math</option>
-          <option value="English">English</option>
-          {/* Add other subjects here */}
+          {subjectsBySection[section]?.map((subj) => (
+            <option key={subj} value={subj}>
+              {subj}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -107,10 +179,13 @@ const AddScores = () => {
           <tbody>
             {students.map((student) => (
               <tr key={student.id}>
-                <td>{student.firstName} {student.lastName}</td>
+                <td>
+                  {student.firstName} {student.lastName}
+                </td>
                 <td>
                   <input
                     type="number"
+                    value={scores[student.id]?.CAT1 || ""}
                     onChange={(e) =>
                       handleScoreChange(student.id, "CAT1", e.target.value)
                     }
@@ -119,6 +194,7 @@ const AddScores = () => {
                 <td>
                   <input
                     type="number"
+                    value={scores[student.id]?.CAT2 || ""}
                     onChange={(e) =>
                       handleScoreChange(student.id, "CAT2", e.target.value)
                     }
@@ -127,6 +203,7 @@ const AddScores = () => {
                 <td>
                   <input
                     type="number"
+                    value={scores[student.id]?.Assignment || ""}
                     onChange={(e) =>
                       handleScoreChange(student.id, "Assignment", e.target.value)
                     }
@@ -135,6 +212,7 @@ const AddScores = () => {
                 <td>
                   <input
                     type="number"
+                    value={scores[student.id]?.Exam || ""}
                     onChange={(e) =>
                       handleScoreChange(student.id, "Exam", e.target.value)
                     }
@@ -146,7 +224,15 @@ const AddScores = () => {
         </table>
       )}
 
-      <button className="save-button" onClick={saveScores}>Save Scores</button>
+      <button className="save-button" onClick={saveScores}>
+        Save Scores
+      </button>
+      <button
+        className="back-button"
+        onClick={() => navigate("/teacher-portal")}
+      >
+        Back
+      </button>
       {message && <p className="message">{message}</p>}
     </div>
   );

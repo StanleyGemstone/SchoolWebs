@@ -23,7 +23,8 @@
     }
 
     .subject-select {
-      width: 300px;
+      width: 100%;
+      max-width: 300px;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -41,6 +42,7 @@
       border: 1px solid #ddd;
       text-align: center;
       padding: 10px;
+      font-size: 14px;
     }
 
     th {
@@ -54,7 +56,6 @@
       text-align: center;
       border: 1px solid #ddd;
       border-radius: 3px;
-      background-color: #fdd; /* Light red background initially */
       transition: background-color 0.3s;
 
       &:focus {
@@ -62,17 +63,46 @@
         border-color: #007bff;
       }
 
-      &.completed {
-        background-color: #d4edda; /* Green background for completed fields */
+      &.error {
+        background-color: #f8d7da; /* Light red background for errors */
       }
 
       &.saved {
-        background-color: #fff; /* Normal white background for saved fields */
+        background-color: #ffffff; /* White background for saved fields */
       }
     }
   }
 
-  .save-button {
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &.back-button {
+        background-color: #6c757d;
+
+        &:hover {
+          background-color: #5a6268;
+        }
+      }
+    }
+  }
+
+  .save-button, .back-button {
     display: block;
     margin: 20px auto;
     background-color: #007bff;
@@ -101,6 +131,63 @@
 
     &.error {
       color: red;
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .form-group {
+      label {
+        font-size: 16px;
+      }
+
+      .subject-select {
+        font-size: 14px;
+      }
+    }
+
+    .students-table {
+      th,
+      td {
+        font-size: 12px;
+        padding: 8px;
+      }
+    }
+
+    .buttons-container button {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .form-group {
+      .subject-select {
+        width: 100%;
+      }
+    }
+
+    .students-table {
+      th,
+      td {
+        font-size: 10px;
+        padding: 6px;
+      }
+    }
+
+    .buttons-container {
+      flex-direction: column;
+      gap: 10px;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }
