@@ -1,5 +1,5 @@
 // import React, { useState, useEffect } from "react";
-// import { collection, query, where, getDocs } from "firebase/firestore";
+// import { collection, getDocs } from "firebase/firestore";
 // import { db } from "../firebase"; // Firestore instance
 // import useAuth from "../components/useAuth";
 // import "../styles/ViewStudents.scss";
@@ -13,18 +13,15 @@
 //   useEffect(() => {
 //     const fetchStudents = async () => {
 //       if (!currentUser) {
-//         setErrorMessage("Unable to fetch class details for the teacher.");
+//         setErrorMessage("User authentication failed.");
 //         setLoading(false);
 //         return;
 //       }
 
 //       try {
-//         const q = query(
-//           collection(db, "users", currentUser.uid, "students"),
-//           where("class", "==", currentUser.class)  // Filter students by teacher's class
-//         );
+//         const studentsRef = collection(db, "users", currentUser.uid, "students");
+//         const querySnapshot = await getDocs(studentsRef);
 
-//         const querySnapshot = await getDocs(q);
 //         const studentList = querySnapshot.docs.map((doc) => ({
 //           id: doc.id,
 //           ...doc.data(),
@@ -52,9 +49,9 @@
 
 //   return (
 //     <div className="view-students">
-//       <h1>Students in Class {currentUser?.class}</h1>
+//       <h1>Students List</h1>
 //       {students.length === 0 ? (
-//         <p>No students have been registered in this class yet.</p>
+//         <p>No students have been registered yet.</p>
 //       ) : (
 //         <table className="students-table">
 //           <thead>
@@ -100,17 +97,18 @@ const ViewStudents = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       if (!currentUser) {
-        setErrorMessage("Unable to fetch details for the teacher.");
+        console.error("Authentication failed: No user is currently signed in.");
+        setErrorMessage("User authentication failed. Please log in.");
         setLoading(false);
         return;
       }
 
-      try {
-        // Fetch all students under the current teacher
-        const studentCollection = collection(db, "users", currentUser.uid.teacherid, "students");
-        const querySnapshot = await getDocs(studentCollection);
+      console.log("Current user:", currentUser);
 
-        // Map query results to student data
+      try {
+        const studentsRef = collection(db, "users", currentUser.uid, "students");
+        const querySnapshot = await getDocs(studentsRef);
+
         const studentList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -138,7 +136,7 @@ const ViewStudents = () => {
 
   return (
     <div className="view-students">
-      <h1>Students Registered by {currentUser?.firstName}</h1>
+      <h1>Students List</h1>
       {students.length === 0 ? (
         <p>No students have been registered yet.</p>
       ) : (

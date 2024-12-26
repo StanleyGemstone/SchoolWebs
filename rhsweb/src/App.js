@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import RegisterStudent from "./pages/RegisterStudent";
-import AddScore from "./pages/AddScore";
+import AddScores from "./pages/AddScores";
 import TeacherPortal from "./pages/TeacherPortal";
 import StudentPortal from "./pages/StudentPortal";
 import StudentProfile from "./pages/StudentProfile";
@@ -22,7 +22,7 @@ const App = () => {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/register-student" element={<RegisterStudent />} />
-        <Route path="/add-score" element={<AddScore />} />
+        <Route path="/add-score" element={<AddScores />} />
         <Route path="/teacher-portal" element={<TeacherPortal />} />
         <Route path="/student-portal" element={<StudentPortal />} />
         <Route path="/student-profile" element={<StudentProfile />} />

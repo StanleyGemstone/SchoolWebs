@@ -1,0 +1,106 @@
+.add-scores-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+
+    label {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .subject-select {
+      width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  }
+
+  .students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 10px;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    td input {
+      width: 100%;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      background-color: #fdd; /* Light red background initially */
+      transition: background-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      &.completed {
+        background-color: #d4edda; /* Green background for completed fields */
+      }
+
+      &.saved {
+        background-color: #fff; /* Normal white background for saved fields */
+      }
+    }
+  }
+
+  .save-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .message {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+
+    &.success {
+      color: green;
+    }
+
+    &.error {
+      color: red;
+    }
+  }
+}
