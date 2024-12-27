@@ -1,42 +1,123 @@
+// .view-students {
+//     max-width: 1200px;
+//     margin: 0 auto;
+//     padding: 20px;
+  
+//     h1 {
+//       text-align: center;
+//       margin-bottom: 20px;
+//     }
+  
+//     .error-message {
+//       color: red;
+//       font-weight: bold;
+//       text-align: center;
+//     }
+  
+//     .students-table {
+//       width: 100%;
+//       border-collapse: collapse;
+//       margin-top: 20px;
+  
+//       th,
+//       td {
+//         border: 0.5px solid #007bff5b;
+//         text-align: left;
+//         padding: 10px;
+//         font-size: 20px;
+//       }
+  
+//       th {
+//         background-color: #007bff;
+//         color: white;
+//         text-align: center;
+//         font-weight: bold;
+//       }
+  
+//       tr:nth-child(even) {
+//         background-color: #f9f9f9;
+//       }
+  
+//       tr:hover {
+//         background-color: #f1f1f1;
+//       }
+//     }
+//   }
+
 .view-students {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #2a2a72;
+  }
+
+  .error-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th,
+    td {
+      border: 1px solid #007bff5b;
+      text-align: left;
+      padding: 10px;
+      font-size: 1rem;
     }
-  
-    .error-message {
-      color: red;
+
+    th {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
       font-weight: bold;
-      text-align: center;
     }
-  
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    h1 {
+      font-size: 1.5rem;
+    }
+
     .students-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-  
+      font-size: 0.9rem;
       th,
       td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
-      }
-  
-      th {
-        background-color: #f4f4f4;
-        font-weight: bold;
-      }
-  
-      tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-  
-      tr:hover {
-        background-color: #f1f1f1;
+        padding: 8px;
       }
     }
-  }  
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.2rem;
+    }
+
+    .students-table {
+      font-size: 0.8rem;
+      th,
+      td {
+        padding: 5px;
+      }
+    }
+  }
+}

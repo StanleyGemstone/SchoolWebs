@@ -10,9 +10,10 @@ const AddScores = () => {
   const [students, setStudents] = useState([]);
   const [subject, setSubject] = useState("");
   const [scores, setScores] = useState({});
+  const [invalidScores, setInvalidScores] = useState({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
-  const [section, setSection] = useState(null); // Updated initial state to null
+  const [section, setSection] = useState(null);
   const navigate = useNavigate();
 
   const subjectsBySection = {
@@ -27,16 +28,14 @@ const AddScores = () => {
       try {
         setLoading(true);
 
-        // Fetch teacher's section
         const teacherDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (teacherDoc.exists()) {
           const teacherData = teacherDoc.data();
-          setSection(teacherData.section); // Ensure `section` is set correctly
+          setSection(teacherData.section);
         } else {
           throw new Error("Teacher data not found");
         }
 
-        // Fetch students
         const studentsRef = collection(db, "users", currentUser.uid, "students");
         const querySnapshot = await getDocs(studentsRef);
 
@@ -45,7 +44,7 @@ const AddScores = () => {
             id: doc.id,
             ...doc.data(),
           }))
-          .sort((a, b) => a.firstName.localeCompare(b.firstName)); // Sort alphabetically by first name
+          .sort((a, b) => a.firstName.localeCompare(b.firstName));
 
         setStudents(studentList);
       } catch (error) {
@@ -58,43 +57,28 @@ const AddScores = () => {
     fetchStudentsAndSection();
   }, [currentUser]);
 
-  useEffect(() => {
-    const fetchSavedScores = async () => {
-      if (!subject || students.length === 0) return;
-
-      try {
-        const scoresData = {};
-        for (const student of students) {
-          const subjectDoc = await getDoc(
-            doc(
-              db,
-              "users",
-              currentUser.uid,
-              "students",
-              student.id,
-              "subjects",
-              subject
-            )
-          );
-          if (subjectDoc.exists()) {
-            scoresData[student.id] = subjectDoc.data().scores;
-          }
-        }
-        setScores(scoresData);
-      } catch (error) {
-        console.error("Error fetching saved scores:", error.message);
-      }
-    };
-
-    fetchSavedScores();
-  }, [subject, students, currentUser]);
+  const validateScore = (field, value) => {
+    const maxScores = { CAT1: 15, CAT2: 15, Assignment: 10, Exam: 60 };
+    return value > maxScores[field];
+  };
 
   const handleScoreChange = (studentId, field, value) => {
+    const numericValue = parseInt(value, 10) || 0;
+    const isInvalid = validateScore(field, numericValue);
+
     setScores((prev) => ({
       ...prev,
       [studentId]: {
         ...prev[studentId],
-        [field]: parseInt(value, 10) || 0,
+        [field]: numericValue,
+      },
+    }));
+
+    setInvalidScores((prev) => ({
+      ...prev,
+      [studentId]: {
+        ...prev[studentId],
+        [field]: isInvalid,
       },
     }));
   };
@@ -105,20 +89,11 @@ const AddScores = () => {
       return;
     }
 
-    const invalidEntries = [];
-    Object.entries(scores).forEach(([studentId, studentScores]) => {
-      Object.entries(studentScores).forEach(([key, value]) => {
-        if (
-          ((key === "CAT1" || key === "CAT2") && value > 15) ||
-          (key === "Assignment" && value > 10) ||
-          (key === "Exam" && value > 60)
-        ) {
-          invalidEntries.push(studentId);
-        }
-      });
-    });
+    const hasErrors = Object.values(invalidScores).some((student) =>
+      Object.values(student).some((isInvalid) => isInvalid)
+    );
 
-    if (invalidEntries.length > 0) {
+    if (hasErrors) {
       setMessage("Some scores exceed the maximum allowed limits.");
       return;
     }
@@ -140,6 +115,7 @@ const AddScores = () => {
 
       await Promise.all(promises);
       setMessage("Scores saved successfully!");
+      setInvalidScores({});
     } catch (error) {
       console.error("Error saving scores:", error.message);
       setMessage("Failed to save scores. Try again.");
@@ -186,42 +162,21 @@ const AddScores = () => {
                 <td>
                   {student.surname} {student.middleName} {student.firstName}
                 </td>
-                <td>
-                  <input
-                    type="number"
-                    value={scores[student.id]?.CAT1 || ""}
-                    onChange={(e) =>
-                      handleScoreChange(student.id, "CAT1", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={scores[student.id]?.CAT2 || ""}
-                    onChange={(e) =>
-                      handleScoreChange(student.id, "CAT2", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={scores[student.id]?.Assignment || ""}
-                    onChange={(e) =>
-                      handleScoreChange(student.id, "Assignment", e.target.value)
-                    }
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={scores[student.id]?.Exam || ""}
-                    onChange={(e) =>
-                      handleScoreChange(student.id, "Exam", e.target.value)
-                    }
-                  />
-                </td>
+                {["CAT1", "CAT2", "Assignment", "Exam"].map((field) => (
+                  <td key={field}>
+                    <input
+                      type="number"
+                      value={scores[student.id]?.[field] || ""}
+                      onChange={(e) =>
+                        handleScoreChange(student.id, field, e.target.value)
+                      }
+                      style={{
+                        backgroundColor:
+                          invalidScores[student.id]?.[field] && "lightcoral",
+                      }}
+                    />
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>
