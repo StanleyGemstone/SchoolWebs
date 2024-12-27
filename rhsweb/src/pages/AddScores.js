@@ -109,9 +109,9 @@ const AddScores = () => {
     Object.entries(scores).forEach(([studentId, studentScores]) => {
       Object.entries(studentScores).forEach(([key, value]) => {
         if (
-          (key === "CAT1" || key === "CAT2") && value > 15 ||
-          key === "Assignment" && value > 10 ||
-          key === "Exam" && value > 60
+          ((key === "CAT1" || key === "CAT2") && value > 15) ||
+          (key === "Assignment" && value > 10) ||
+          (key === "Exam" && value > 60)
         ) {
           invalidEntries.push(studentId);
         }
@@ -174,17 +174,17 @@ const AddScores = () => {
           <thead>
             <tr>
               <th>Student Name</th>
-              <th>1st CAT</th>
-              <th>2nd CAT</th>
-              <th>Assignment</th>
-              <th>Exam</th>
+              <th>1st CAT (15)</th>
+              <th>2nd CAT (15)</th>
+              <th>Assignment (10)</th>
+              <th>Exam (60)</th>
             </tr>
           </thead>
           <tbody>
             {students.map((student) => (
               <tr key={student.id}>
                 <td>
-                  {student.firstName} {student.lastName}
+                  {student.surname} {student.middleName} {student.firstName}
                 </td>
                 <td>
                   <input
