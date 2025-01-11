@@ -46,6 +46,9 @@ const TeacherPortal = () => {
             <Link to="/view-students">View Students</Link>
           </li>
           <li>
+            <Link to="/broadsheet-view">Display Results</Link>
+          </li>
+          <li>
             <button className="sign-out-button" onClick={handleSignOut}>
               Sign Out
             </button>

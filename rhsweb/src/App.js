@@ -12,6 +12,8 @@ import StudentProfile from "./pages/StudentProfile";
 import StudentResults from "./pages/StudentResults";
 import ViewStudents from "./pages/ViewStudents";
 import NotFound from "./components/NotFound";
+import SingleView from "./pages/SingleView";
+import BroadsheetView from "./pages/BroadsheetView";
 import "./index.scss"; // Import global styles
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
         <Route path="/student-profile" element={<StudentProfile />} />
         <Route path="/student-results" element={<StudentResults />} />
         <Route path="/view-students" element={<ViewStudents />} />
+        <Route path="/single-view" element={<SingleView />} />
+        <Route path="/broadsheet-view" element={<BroadsheetView />} />
         <Route path="*" element={<NotFound />} />
         {/* Add more routes as needed */}
       </Routes>
