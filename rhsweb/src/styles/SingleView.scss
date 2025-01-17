@@ -1,109 +1,331 @@
+// .single-view {
+//     margin: 2rem auto;
+//     padding: 1rem;
+//     max-width: 900px;
+//     background-color: #f9f9f9;
+//     border-radius: 8px;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//     font-family: 'Arial', sans-serif;
+  
+//     h2 {
+//       text-align: center;
+//       color: #333;
+//       margin-bottom: 1.5rem;
+//     }
+  
+//     select {
+//       display: block;
+//       margin: 0 auto 1.5rem auto;
+//       padding: 0.5rem;
+//       font-size: 1rem;
+//       border: 1px solid #ccc;
+//       border-radius: 5px;
+//       width: 50%;
+  
+//       &:focus {
+//         outline: none;
+//         border-color: #007bff;
+//         box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+//       }
+//     }
+  
+//     .report-card {
+//       padding: 1rem;
+//       background-color: #fff;
+//       border-radius: 8px;
+//       border: 1px solid #ddd;
+  
+//       h3 {
+//         text-align: center;
+//         color: #444;
+//         margin-bottom: 1rem;
+//       }
+  
+//       table {
+//         width: 100%;
+//         border-collapse: collapse;
+//         margin-bottom: 1rem;
+  
+//         thead {
+//           background-color: #007bff;
+//           color: white;
+  
+//           th {
+//             padding: 0.75rem;
+//             text-align: left;
+//           }
+//         }
+  
+//         tbody {
+//           tr {
+//             &:nth-child(even) {
+//               background-color: #f2f2f2;
+//             }
+//           }
+  
+//           td {
+//             padding: 0.75rem;
+//             text-align: left;
+//             border-bottom: 1px solid #ddd;
+  
+//             &.low-score {
+//               color: #ff4d4d;
+//               font-weight: bold;
+//             }
+//           }
+//         }
+//       }
+  
+//       p {
+//         font-size: 0.9rem;
+//         margin: 0.5rem 0;
+//         color: #555;
+  
+//         &:last-of-type {
+//           margin-bottom: 1rem;
+//         }
+//       }
+  
+//       button {
+//         display: block;
+//         margin: 0 auto;
+//         padding: 0.5rem 1.5rem;
+//         font-size: 1rem;
+//         color: white;
+//         background-color: #007bff;
+//         border: none;
+//         border-radius: 5px;
+//         cursor: pointer;
+  
+//         &:hover {
+//           background-color: #0056b3;
+//         }
+  
+//         &:active {
+//           transform: scale(0.98);
+//         }
+//       }
+//     }
+//   } 
+
+// SingleView.scss
+
 .single-view {
-    margin: 2rem auto;
-    padding: 1rem;
-    max-width: 900px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-  
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 1.5rem;
-    }
-  
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+
     select {
-      display: block;
-      margin: 0 auto 1.5rem auto;
       padding: 0.5rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 50%;
-  
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-width: 200px;
+      
       &:focus {
         outline: none;
         border-color: #007bff;
-        box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
       }
     }
-  
-    .report-card {
-      padding: 1rem;
-      background-color: #fff;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-  
-      h3 {
-        text-align: center;
-        color: #444;
-        margin-bottom: 1rem;
+  }
+
+  .report-card {
+    border: 1px solid #000;
+    padding: 2rem;
+    margin-top: 2rem;
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
       }
-  
+
+      h3 {
+        font-size: 1.2rem;
+      }
+    }
+
+    .student-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      background: #f8f9fa;
+
+      p {
+        margin: 0;
+        font-weight: 500;
+      }
+    }
+
+    .scores-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+
+      th, td {
+        border: 1px solid #000;
+        padding: 0.5rem;
+        text-align: center;
+      }
+
+      th {
+        background: #f8f9fa;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      td {
+        &:first-child {
+          text-align: left;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .virtues {
+      margin-bottom: 2rem;
+
+      h4 {
+        margin-bottom: 1rem;
+        font-weight: bold;
+      }
+
+      table {
+        width: 50%;
+        border-collapse: collapse;
+
+        th, td {
+          border: 1px solid #000;
+          padding: 0.5rem;
+          text-align: left;
+        }
+
+        th {
+          background: #f8f9fa;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+
+      p {
+        margin: 0;
+        font-weight: 500;
+      }
+    }
+
+    .remarks {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border: 1px solid #ddd;
+
+      p {
+        margin: 0 0 1rem 0;
+        line-height: 1.5;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        strong {
+          display: inline-block;
+          width: 180px;
+        }
+      }
+    }
+
+    .grading-scale {
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-bottom: 1rem;
-  
-        thead {
-          background-color: #007bff;
-          color: white;
-  
-          th {
-            padding: 0.75rem;
-            text-align: left;
-          }
+
+        th, td {
+          border: 1px solid #000;
+          padding: 0.5rem;
+          text-align: center;
         }
-  
-        tbody {
-          tr {
-            &:nth-child(even) {
-              background-color: #f2f2f2;
-            }
-          }
-  
-          td {
-            padding: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-  
-            &.low-score {
-              color: #ff4d4d;
-              font-weight: bold;
-            }
-          }
-        }
-      }
-  
-      p {
-        font-size: 0.9rem;
-        margin: 0.5rem 0;
-        color: #555;
-  
-        &:last-of-type {
-          margin-bottom: 1rem;
-        }
-      }
-  
-      button {
-        display: block;
-        margin: 0 auto;
-        padding: 0.5rem 1.5rem;
-        font-size: 1rem;
-        color: white;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-  
-        &:hover {
-          background-color: #0056b3;
-        }
-  
-        &:active {
-          transform: scale(0.98);
+
+        th {
+          background: #f8f9fa;
+          font-weight: bold;
         }
       }
     }
-  }  
+
+    .export-button {
+      display: block;
+      width: 200px;
+      margin: 2rem auto 0;
+      padding: 0.75rem 1.5rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 500;
+
+      &:hover {
+        background: #218838;
+      }
+    }
+  }
+
+  // Loading and error states
+  .loading, .error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+  }
+
+  .error {
+    color: #dc3545;
+  }
+}
+
+// Add print styles for better PDF export
+@media print {
+  .controls {
+    display: none;
+  }
+
+  .export-button {
+    display: none;
+  }
+
+  .report-card {
+    border: none;
+  }
+}
