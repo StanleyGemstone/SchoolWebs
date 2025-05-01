@@ -14,6 +14,7 @@ const AddScores = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [section, setSection] = useState(null);
+  const [calculatedScores, setCalculatedScores] = useState({});
   const navigate = useNavigate();
 
   const subjectsBySection = {
@@ -44,7 +45,7 @@ const AddScores = () => {
             id: doc.id,
             ...doc.data(),
           }))
-          .sort((a, b) => a.firstName.localeCompare(b.firstName));
+          .sort((a, b) => a.surname.localeCompare(b.surname)); // Sort alphabetically by surname
 
         setStudents(studentList);
       } catch (error) {
@@ -62,17 +63,115 @@ const AddScores = () => {
     return value > maxScores[field];
   };
 
+  const handleSubjectChange = async (e) => {
+    const selectedSubject = e.target.value;
+    setSubject(selectedSubject);
+    setScores({});
+    setCalculatedScores({});
+    setInvalidScores({});
+    setMessage("");
+  
+    if (selectedSubject) {
+      // Fetch existing scores for the selected subject
+      try {
+        setLoading(true);
+        const existingScores = {};
+        const calculatedScores = {};
+  
+        // Fetch scores for each student
+        for (const student of students) {
+          const subjectRef = doc(
+            db,
+            "users",
+            currentUser.uid,
+            "students",
+            student.id,
+            "subjects",
+            selectedSubject
+          );
+          const subjectDoc = await getDoc(subjectRef);
+          
+          if (subjectDoc.exists()) {
+            const data = subjectDoc.data();
+            // Store the score components
+            existingScores[student.id] = {
+              CAT1: data.CAT1 || 0,
+              CAT2: data.CAT2 || 0,
+              Assignment: data.Assignment || 0,
+              Exam: data.Exam || 0
+            };
+            // Store the calculated fields
+            calculatedScores[student.id] = {
+              total: data.total || 0,
+              grade: data.grade || '-',
+              position: data.position || '-'
+            };
+          }
+        }
+  
+        setScores(existingScores);
+        setCalculatedScores(calculatedScores);
+      } catch (error) {
+        console.error("Error fetching existing scores:", error);
+        setMessage("Error loading existing scores");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const calculateGrade = (total) => {
+    if (total >= 70) return 'A';
+    if (total >= 60) return 'B';
+    if (total >= 50) return 'C';
+    if (total >= 40) return 'D';
+    return 'F';
+  };
+
+  const getOrdinalSuffix = (position) => {
+    const j = position % 10;
+    const k = position % 100;
+    if (j === 1 && k !== 11) return position + "st";
+    if (j === 2 && k !== 12) return position + "nd";
+    if (j === 3 && k !== 13) return position + "rd";
+    return position + "th";
+  };
+
   const handleScoreChange = (studentId, field, value) => {
     const numericValue = parseInt(value, 10) || 0;
     const isInvalid = validateScore(field, numericValue);
 
-    setScores((prev) => ({
-      ...prev,
+    const updatedScores = {
+      ...scores,
       [studentId]: {
-        ...prev[studentId],
+        ...scores[studentId],
         [field]: numericValue,
       },
-    }));
+    };
+
+    setScores(updatedScores);
+    
+    // Calculate total, grade, and temporary position
+    const studentsWithTotals = Object.entries(updatedScores).map(([id, scores]) => {
+      const total = (scores.CAT1 || 0) + 
+                   (scores.CAT2 || 0) + 
+                   (scores.Assignment || 0) + 
+                   (scores.Exam || 0);
+      return { studentId: id, total };
+    });
+
+    studentsWithTotals.sort((a, b) => b.total - a.total);
+
+    const newCalculatedScores = {};
+    studentsWithTotals.forEach(({ studentId, total }, index) => {
+      newCalculatedScores[studentId] = {
+        total,
+        grade: calculateGrade(total),
+        position: getOrdinalSuffix(index + 1)
+      };
+    });
+
+    setCalculatedScores(newCalculatedScores);
 
     setInvalidScores((prev) => ({
       ...prev,
@@ -101,6 +200,8 @@ const AddScores = () => {
     try {
       const promises = Object.keys(scores).map(async (studentId) => {
         const studentScores = scores[studentId];
+        const calculated = calculatedScores[studentId];
+        
         const subjectRef = doc(
           db,
           "users",
@@ -110,7 +211,13 @@ const AddScores = () => {
           "subjects",
           subject
         );
-        await setDoc(subjectRef, { scores: studentScores });
+
+        await setDoc(subjectRef, {
+          ...studentScores,
+          total: calculated.total,
+          grade: calculated.grade,
+          position: calculated.position
+        });
       });
 
       await Promise.all(promises);
@@ -131,7 +238,7 @@ const AddScores = () => {
         <label>Select Subject:</label>
         <select
           value={subject}
-          onChange={(e) => setSubject(e.target.value)}
+          onChange={handleSubjectChange}
           className="subject-select"
           disabled={!section}
         >
@@ -154,6 +261,9 @@ const AddScores = () => {
               <th>2nd CAT (15)</th>
               <th>Assignment (10)</th>
               <th>Exam (60)</th>
+              <th>Total (100)</th>
+              <th>Grade</th>
+              <th>Position</th>
             </tr>
           </thead>
           <tbody>
@@ -177,6 +287,9 @@ const AddScores = () => {
                     />
                   </td>
                 ))}
+                <td>{calculatedScores[student.id]?.total || 0}</td>
+                <td>{calculatedScores[student.id]?.grade || '-'}</td>
+                <td>{calculatedScores[student.id]?.position || '-'}</td>
               </tr>
             ))}
           </tbody>

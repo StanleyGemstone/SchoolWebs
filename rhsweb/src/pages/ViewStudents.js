@@ -31,6 +31,7 @@ const ViewStudents = () => {
           setStudents(studentList);
         } catch (error) {
           console.error("Error fetching data:", error.message);
+          setErrorMessage("Error Fetching data");
         } finally {
           setLoading(false);
         }
