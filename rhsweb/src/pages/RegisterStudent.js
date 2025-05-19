@@ -9,6 +9,7 @@ const RegisterStudent = () => {
   const [middleName, setMiddleName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [gender, setGender] = useState("");
+  const [term, setTerm] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -19,7 +20,7 @@ const RegisterStudent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!surname || !firstName || !gender) {
+    if (!surname || !firstName || !gender || !term) {
       setError("Please fill in all required fields.");
       setSuccess("");
       return;
@@ -33,6 +34,7 @@ const RegisterStudent = () => {
         middleName,
         firstName,
         gender,
+        term,
         class: currentUser.class, // Teacher's assigned class
         teacherId: currentUser.uid, // Teacher's ID
         createdAt: new Date(),
@@ -46,6 +48,7 @@ const RegisterStudent = () => {
       setMiddleName("");
       setFirstName("");
       setGender("");
+      setTerm(""); // Reset to default term
     } catch (err) {
       setError("Failed to register student. Please try again.");
       setSuccess("");
@@ -90,6 +93,16 @@ const RegisterStudent = () => {
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
+        </select>
+
+        <select 
+          value={term}
+          onChange={(e) => setTerm(e.target.value)} 
+          required>
+          <option value="">Select Term</option>
+          <option value="First Term">1st Term</option>
+          <option value="Second Term">2nd Term</option>
+          <option value="Third Term">3rd Term</option>
         </select>
 
         <button type="submit">Register Student</button>

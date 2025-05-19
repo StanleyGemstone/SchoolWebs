@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase"; // Firestore instance
 import useAuth from "../components/useAuth";
+import { useNavigate } from "react-router-dom";
 import "../styles/ViewStudents.scss";
 
 const ViewStudents = () => {
@@ -9,6 +10,7 @@ const ViewStudents = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const { currentUser } = useAuth(); // Current teacher's information
+  const navigate = useNavigate(); // For navigation
 
     useEffect(() => {
       const fetchStudents = async () => {
@@ -50,6 +52,15 @@ const ViewStudents = () => {
 
   return (
     <div className="view-students">
+      <select 
+          value={term}
+          onChange={(e) => setTerm(e.target.value)} 
+          required>
+          <option value="">Select Term</option>
+          <option value="First Term">1st Term</option>
+          <option value="Second Term">2nd Term</option>
+          <option value="Third Term">3rd Term</option>
+      </select>
       <h1>Students List</h1>
       {students.length === 0 ? (
         <p>No students have been registered yet.</p>
@@ -73,6 +84,23 @@ const ViewStudents = () => {
           </tbody>
         </table>
       )}
+      <div className="buttons-container">
+      <button
+        className="back-button"
+        onClick={() => navigate("/teacher-portal")}
+      >
+        Back
+      </button>
+      <button
+        className="back-button"
+        onClick={() => navigate("/register-student")}
+      >
+        Register New Students
+      </button>
+      </div>
+      <div className="footer">
+        <p>&copy; 2023 Royal Heritage School. All rights reserved.</p>
+      </div>
     </div>
   );
 };

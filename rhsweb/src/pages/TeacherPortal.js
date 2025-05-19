@@ -74,6 +74,9 @@ const TeacherPortal = () => {
           </Link>
         </div>
       </main>
+      <div className="footer">
+        <p>&copy; 2023 Royal Heritage School. All rights reserved.</p>
+      </div>
     </div>
   );
 };

@@ -91,6 +91,41 @@
     }
   }
 
+
+  .back-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  // .back-button {
+  //   display: relative;
+  //   margin: 20px auto;
+  //   background-color: #007bff;
+  //   color: white;
+  //   padding: 10px 20px;
+  //   border: none;
+  //   border-radius: 5px;
+  //   font-size: 16px;
+  //   cursor: pointer;
+  //   transition: background-color 0.3s;
+
+  //   &:hover {
+  //     background-color: #0056b3;
+  //   }
+  // }
+
   @media (max-width: 768px) {
     padding: 10px;
 
