@@ -9,6 +9,7 @@ const ViewStudents = () => {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [term, setTerm] = useState("");
   const { currentUser } = useAuth(); // Current teacher's information
   const navigate = useNavigate(); // For navigation
 
@@ -28,6 +29,7 @@ const ViewStudents = () => {
               id: doc.id,
               ...doc.data(),
             }))
+            .filter((student) => student.term === term) // Filter by selected term
             .sort((a, b) => a.surname.localeCompare(b.surname)); // Sort alphabetically by surname
   
           setStudents(studentList);
@@ -40,7 +42,7 @@ const ViewStudents = () => {
       };
   
       fetchStudents();
-    }, [currentUser]);
+    }, [currentUser, term]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -52,7 +54,9 @@ const ViewStudents = () => {
 
   return (
     <div className="view-students">
-      <select 
+      <h1>Students List</h1>
+      <select
+          className="select-term" 
           value={term}
           onChange={(e) => setTerm(e.target.value)} 
           required>
@@ -61,9 +65,12 @@ const ViewStudents = () => {
           <option value="Second Term">2nd Term</option>
           <option value="Third Term">3rd Term</option>
       </select>
-      <h1>Students List</h1>
-      {students.length === 0 ? (
-        <p>No students have been registered yet.</p>
+      {term === "" ? (
+        <p>Please select a term to view students.</p>
+      ) : loading ? (
+        <p>Loading...</p>
+      ) : students.length === 0 ? (
+        <p>No students have been registered yet for {term}.</p>
       ) : (
         <table className="students-table">
           <thead>

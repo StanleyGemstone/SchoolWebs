@@ -1,49 +1,3 @@
-// .view-students {
-//     max-width: 1200px;
-//     margin: 0 auto;
-//     padding: 20px;
-  
-//     h1 {
-//       text-align: center;
-//       margin-bottom: 20px;
-//     }
-  
-//     .error-message {
-//       color: red;
-//       font-weight: bold;
-//       text-align: center;
-//     }
-  
-//     .students-table {
-//       width: 100%;
-//       border-collapse: collapse;
-//       margin-top: 20px;
-  
-//       th,
-//       td {
-//         border: 0.5px solid #007bff5b;
-//         text-align: left;
-//         padding: 10px;
-//         font-size: 20px;
-//       }
-  
-//       th {
-//         background-color: #007bff;
-//         color: white;
-//         text-align: center;
-//         font-weight: bold;
-//       }
-  
-//       tr:nth-child(even) {
-//         background-color: #f9f9f9;
-//       }
-  
-//       tr:hover {
-//         background-color: #f1f1f1;
-//       }
-//     }
-//   }
-
 .view-students {
   max-width: 1200px;
   margin: 0 auto;
@@ -91,6 +45,24 @@
     }
   }
 
+  .select-term {
+    display: block;
+    margin: 20px auto;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      color: #0056b3;
+      background-color: white;
+    }
+  }
+
 
   .back-button {
     display: block;
@@ -108,23 +80,6 @@
       background-color: #0056b3;
     }
   }
-
-  // .back-button {
-  //   display: relative;
-  //   margin: 20px auto;
-  //   background-color: #007bff;
-  //   color: white;
-  //   padding: 10px 20px;
-  //   border: none;
-  //   border-radius: 5px;
-  //   font-size: 16px;
-  //   cursor: pointer;
-  //   transition: background-color 0.3s;
-
-  //   &:hover {
-  //     background-color: #0056b3;
-  //   }
-  // }
 
   @media (max-width: 768px) {
     padding: 10px;
