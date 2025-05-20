@@ -1,12 +1,14 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "../styles/HomePage.scss";
 import Logo from '../utils/logo.png';
 
 const Homepage = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const auth = getAuth();
@@ -46,7 +48,10 @@ const Homepage = () => {
                 >
                   Logout
                 </button>
-              </li>
+              </li>, 
+            <li>
+              <button onClick={() => navigate("/teacher-portal")}>Dashboard</button>
+            </li>
             )}
           </ul>
         </nav>
