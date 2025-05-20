@@ -14,6 +14,7 @@ const AddScores = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [section, setSection] = useState(null);
+  const [term, setTerm] = useState("");
   const [calculatedScores, setCalculatedScores] = useState({});
   const navigate = useNavigate();
 
@@ -84,6 +85,7 @@ const AddScores = () => {
             id: doc.id,
             ...doc.data(),
           }))
+          .filter((student) => student.term === term) // Filter by selected term
           .sort((a, b) => a.surname.localeCompare(b.surname)); // Sort alphabetically by surname
 
         setStudents(studentList);
@@ -95,7 +97,7 @@ const AddScores = () => {
     };
 
     fetchStudentsAndSection();
-  }, [currentUser]);
+  }, [currentUser, term]);
 
   const validateScore = (field, value) => {
     const maxScores = { CAT1: 15, CAT2: 15, Assignment: 10, Exam: 60 };
@@ -274,21 +276,31 @@ const AddScores = () => {
     <div className="add-scores-container">
       <h1>Add Scores</h1>
       <div className="form-group">
-        <label>Select Subject:</label>
-        <select
+      <select
+          className="subject-select" 
+          value={term}
+          onChange={(e) => setTerm(e.target.value)} 
+          required>
+          <option value="">Select Term</option>
+          <option value="First Term">1st Term</option>
+          <option value="Second Term">2nd Term</option>
+          <option value="Third Term">3rd Term</option>
+      </select>
+      <select
           value={subject}
           onChange={handleSubjectChange}
           className="subject-select"
           disabled={!section}
         >
-          <option value="">--Select Subject--</option>
+          <option value="">Select Subject</option>
           {section &&
             subjectsBySection[section]?.map((subj) => (
               <option key={subj} value={subj}>
                 {subj}
               </option>
             ))}
-        </select>
+      </select>
+
       </div>
 
       {subject && (
